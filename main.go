@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
+	"flag"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -72,5 +73,18 @@ func CalcularTrazaDeProductoDeMatrices(n int) int {
 }
 
 func main() {
-	fmt.Println("Hello, World!")
+	n := flag.Int("n", 100, "Dimensión de las matrices")
+	umbral := flag.Int("umbral", 10000, "Valor umbral para decidir la rama")
+	archivo := flag.String("archivo", "salida.txt", "Archivo de salida")
+
+	flag.Parse()
+
+	npunt := *n
+	umbralpunt := *umbral
+	archivopunt := *archivo
+
+	fmt.Printf("Configuración de la simulación:\n")
+	fmt.Printf("Dimensión de las matrices: %d\n", npunt)
+	fmt.Printf("Valor umbral: %d\n", umbralpunt)
+	fmt.Printf("Archivo de salida: %s\n", archivopunt)
 }
