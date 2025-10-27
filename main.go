@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 // SimularProofOfWork simula la búsqueda de una prueba de trabajo de blockchain.
@@ -70,6 +71,24 @@ func CalcularTrazaDeProductoDeMatrices(n int) int {
 		trace += sum
 	}
 	return trace
+}
+
+func EjecucionSecuencial(n int, umbral int, blockData string, dificultad int, maxPrimos int) (string, time.Duration) {
+	var ramaGanadora string
+	inicio := time.Now()
+	resultadoTraza := CalcularTrazaDeProductoDeMatrices(n)
+	if resultadoTraza > umbral {
+		fmt.Println("Se ejecutará la rama A")
+		ramaGanadora = "A"
+		SimularProofOfWork(blockData, dificultad)
+	} else {
+		fmt.Println("Se ejecutará la rama B")
+		ramaGanadora = "B"
+		EncontrarPrimos(maxPrimos)
+	}
+	fin := time.Now()
+	tiempoFinal := fin.Sub(inicio)
+	return ramaGanadora, tiempoFinal
 }
 
 func main() {
