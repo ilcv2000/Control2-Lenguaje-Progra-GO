@@ -92,18 +92,57 @@ func EjecucionSecuencial(n int, umbral int, blockData string, dificultad int, ma
 }
 
 func main() {
-	n := flag.Int("n", 100, "Dimensión de las matrices")
-	umbral := flag.Int("umbral", 10000, "Valor umbral para decidir la rama")
-	archivo := flag.String("archivo", "salida.txt", "Archivo de salida")
+
+	modoPunt := flag.String("modo", "Secuencial", "Modo de ejecución: secuencial o concurrente")
+	/*
+		Esta flag permite seleccionar cual función ejecutar, si secuencial, especulativo o análisis.
+		Para decidir cual ejecutar, en la linea de comandos se debe usar:
+		go run main.go -modo Secuencial
+		go run main.go -modo Concurrente
+		go run main.go -modo Análisis
+	*/
+	nPunt := flag.Int("n", 100, "Dimensión de las matrices")
+	umbralPunt := flag.Int("umbral", 10000, "Valor umbral para decidir la rama")
+	archivoPunt := flag.String("archivo", "salida.txt", "Archivo de salida")
+	dificultadPunt := flag.Int("dificultad", 5, "Dificultad para la funcion Proof-of-Work.")
+	maxPrimosPunt := flag.Int("maxprimos", 10000, "Número máximo para buscar primos")
 
 	flag.Parse()
 
-	npunt := *n
-	umbralpunt := *umbral
-	archivopunt := *archivo
+	n := *nPunt
+	umbral := *umbralPunt
+	archivo := *archivoPunt
+	modo := *modoPunt
+	dificultad := *dificultadPunt
+	maxPrimos := *maxPrimosPunt
+
+	fmt.Printf("Ejecutando el modo: %s\n", modo)
+
+	switch modo {
+	case "Secuencial":
+		fmt.Println("Ejecutando simulación SECUENCIAL...")
+
+		rama, tiempo := EjecucionSecuencial(n, umbral, archivo, dificultad, maxPrimos)
+
+		fmt.Printf("Simulación Secuencial Terminada.\n")
+		fmt.Printf("Rama Ganadora: %s\n", rama)
+		fmt.Printf("Tiempo Total: %v\n", tiempo)
+
+	case "Concurrente":
+		fmt.Println("Modo 'concurrente'")
+
+	case "Análisis":
+		fmt.Println("Modo 'analisis'")
+
+	default:
+		fmt.Printf("Error: Modo '%s' no reconocido.\n", modo)
+		fmt.Println("Modos válidos: 'Secuencial', 'Concurrente', 'Análisis'")
+	}
+
+	fmt.Println("--- Programa terminado ---")
 
 	fmt.Printf("Configuración de la simulación:\n")
-	fmt.Printf("Dimensión de las matrices: %d\n", npunt)
-	fmt.Printf("Valor umbral: %d\n", umbralpunt)
-	fmt.Printf("Archivo de salida: %s\n", archivopunt)
+	fmt.Printf("Dimensión de las matrices: %d\n", n)
+	fmt.Printf("Valor umbral: %d\n", umbral)
+	fmt.Printf("Archivo de salida: %s\n", archivo)
 }
